@@ -1,0 +1,1484 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lochinbek IELTS Coach</title>
+  <style>
+    :root{
+      --bg:#0f172a;
+      --card:#111827;
+      --soft:#1f2937;
+      --line:#334155;
+      --text:#e5e7eb;
+      --muted:#94a3b8;
+      --primary:#22d3ee;
+      --primary-dark:#0891b2;
+      --success:#22c55e;
+      --warning:#f59e0b;
+      --danger:#ef4444;
+      --white:#fff;
+      --shadow:0 10px 30px rgba(0,0,0,.25);
+      --radius:20px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      background:linear-gradient(180deg,#020617,#0f172a);
+      color:var(--text);
+    }
+    a{color:var(--primary);text-decoration:none}
+    .container{max-width:1400px;margin:0 auto;padding:18px}
+    .hero{
+      display:grid;grid-template-columns:1.2fr .9fr;gap:18px;
+      min-height:calc(100vh - 36px);align-items:center
+    }
+    .card{
+      background:rgba(17,24,39,.92);
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      padding:20px;
+    }
+    .title{font-size:38px;font-weight:800;line-height:1.1;margin:0 0 10px}
+    .subtitle{color:var(--muted);font-size:16px;line-height:1.6}
+    .pill{
+      display:inline-block;padding:8px 12px;border-radius:999px;
+      background:rgba(34,211,238,.14);color:var(--primary);font-size:12px;font-weight:700
+    }
+    .grid{display:grid;gap:16px}
+    .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+    .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+    .grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+    .stats{display:grid;grid-template-columns:repeat(5,1fr);gap:14px}
+    .stat{
+      background:rgba(30,41,59,.65);
+      border:1px solid var(--line);
+      border-radius:18px;padding:16px
+    }
+    .stat .k{font-size:12px;color:var(--muted)}
+    .stat .v{font-size:24px;font-weight:800;margin-top:6px}
+    .input,.select,.textarea{
+      width:100%;padding:13px 14px;border-radius:14px;border:1px solid var(--line);
+      outline:none;background:#0b1220;color:var(--text)
+    }
+    .textarea{min-height:120px;resize:vertical}
+    .btn{
+      border:none;cursor:pointer;border-radius:14px;padding:12px 16px;
+      font-weight:700;transition:.2s;display:inline-flex;align-items:center;gap:8px
+    }
+    .btn:hover{transform:translateY(-1px)}
+    .btn-primary{background:var(--primary);color:#001018}
+    .btn-primary:hover{background:#67e8f9}
+    .btn-secondary{background:var(--soft);color:var(--text)}
+    .btn-success{background:var(--success);color:#04110a}
+    .btn-warning{background:var(--warning);color:#1a1101}
+    .btn-danger{background:var(--danger);color:#fff}
+    .btn-outline{
+      background:transparent;border:1px solid var(--line);color:var(--text)
+    }
+    .row{display:flex;gap:12px;flex-wrap:wrap}
+    .list{margin:0;padding-left:18px;line-height:1.8;color:var(--muted)}
+    .topbar{
+      display:flex;justify-content:space-between;align-items:center;gap:15px;
+      padding:18px;margin-bottom:18px
+    }
+    .brand{font-size:28px;font-weight:800}
+    .muted{color:var(--muted)}
+    .nav{
+      display:flex;gap:10px;flex-wrap:wrap;margin:0 0 18px
+    }
+    .nav button.active{background:var(--primary);color:#001018}
+    .section-title{margin:0 0 14px;font-size:24px}
+    .question{
+      background:rgba(15,23,42,.7);border:1px solid var(--line);
+      padding:16px;border-radius:18px
+    }
+    .option{
+      display:flex;gap:10px;align-items:flex-start;
+      background:#0b1220;border:1px solid #233045;
+      padding:12px;border-radius:14px;margin-top:10px
+    }
+    .calendar{
+      display:grid;grid-template-columns:repeat(7,1fr);gap:10px
+    }
+    .day{
+      min-height:150px;background:rgba(15,23,42,.8);
+      border:1px solid var(--line);border-radius:16px;padding:10px
+    }
+    .day h4{margin:0 0 8px;font-size:13px}
+    .mini-task{
+      font-size:11px;background:#0b1220;border-radius:10px;padding:8px;
+      margin-bottom:6px;border:1px solid #233045
+    }
+    .badge{
+      display:inline-block;padding:5px 10px;border-radius:999px;
+      font-size:11px;font-weight:700;background:#082f49;color:#67e8f9
+    }
+    .task{
+      display:flex;justify-content:space-between;gap:14px;align-items:flex-start;
+      background:rgba(15,23,42,.7);border:1px solid var(--line);
+      border-radius:18px;padding:14px
+    }
+    .task.done{border-color:#166534;background:rgba(20,83,45,.18)}
+    .lesson{
+      background:rgba(15,23,42,.78);border:1px solid var(--line);border-radius:18px;padding:16px
+    }
+    .lesson h3{margin:0 0 8px}
+    .tag{
+      display:inline-block;padding:6px 10px;border-radius:999px;
+      background:#0c4a6e;color:#a5f3fc;font-size:11px;font-weight:700;margin-right:6px
+    }
+    .notice{
+      padding:12px 14px;border-radius:14px;margin-bottom:14px;font-weight:600
+    }
+    .notice.info{background:rgba(14,165,233,.12);border:1px solid rgba(14,165,233,.25);color:#7dd3fc}
+    .notice.success{background:rgba(34,197,94,.12);border:1px solid rgba(34,197,94,.25);color:#86efac}
+    .notice.warning{background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.25);color:#fcd34d}
+    .notice.danger{background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.25);color:#fca5a5}
+    .chat{
+      background:#0b1220;border:1px solid var(--line);border-radius:18px;padding:14px;
+      max-height:500px;overflow:auto
+    }
+    .bubble{
+      padding:12px 14px;border-radius:14px;margin-bottom:10px;line-height:1.6
+    }
+    .bubble.user{background:var(--primary);color:#001018}
+    .bubble.bot{background:#172033;border:1px solid var(--line)}
+    .cert{
+      background:linear-gradient(135deg,#0f172a,#111827);
+      border:2px solid #22d3ee;padding:18px;border-radius:20px
+    }
+    .footer{
+      text-align:center;color:var(--muted);padding:20px;font-size:13px
+    }
+    .small{font-size:12px;color:var(--muted)}
+    .divider{height:1px;background:var(--line);margin:16px 0}
+    @media(max-width:1100px){
+      .hero,.grid-3,.grid-4,.stats{grid-template-columns:1fr 1fr}
+    }
+    @media(max-width:800px){
+      .hero,.grid-2,.grid-3,.grid-4,.stats,.calendar{grid-template-columns:1fr}
+      .topbar{flex-direction:column;align-items:flex-start}
+      .task{flex-direction:column}
+      .title{font-size:30px}
+    }
+  </style>
+</head>
+<body>
+  <div id="app"></div>
+
+  <script>
+    const OWNER_NAME = "Toshqulov Lochinbek Jamoliddin o'g'li";
+    const LS_USERS = "lochinbek_ielts_users_v2";
+    const LS_CURRENT = "lochinbek_ielts_current_v2";
+
+    const ui = {
+      tab: "dashboard",
+      notice: null,
+      placementAnswers: {},
+      readingAnswers: {},
+      listeningAnswers: {},
+      writing1: "",
+      writing2: "",
+      speaking: "",
+      aiInput: ""
+    };
+    window.__ui = ui;
+
+    const placementQuestions = [
+      { id:"p1", q:"I ___ to school every day.", options:["go","goes","going","gone"], a:0 },
+      { id:"p2", q:"She ___ coffee right now.", options:["drink","drinks","is drinking","drank"], a:2 },
+      { id:"p3", q:"We ___ that film last night.", options:["see","saw","seen","are seeing"], a:1 },
+      { id:"p4", q:"If I had more time, I ___ harder.", options:["study","will study","would study","studied"], a:2 },
+      { id:"p5", q:"This is the book ___ changed my writing.", options:["who","which","where","what"], a:1 },
+      { id:"p6", q:"By next year, she ___ university.", options:["finishes","finished","will have finished","has finishing"], a:2 },
+      { id:"p7", q:"Choose the best academic synonym for 'important'.", options:["big","critical","usual","small"], a:1 },
+      { id:"p8", q:"Which sentence suits IELTS Writing best?", options:[
+        "I totally think it is super cool.",
+        "In my opinion, this issue has several significant consequences.",
+        "This thing is very very good.",
+        "People like it because it is amazing lol."
+      ], a:1 },
+      { id:"p9", q:"Despite ___ tired, he finished the essay.", options:["be","being","was","is"], a:1 },
+      { id:"p10", q:"The report ___ by the team before the deadline.", options:["completed","was completed","has complete","will completing"], a:1 }
+    ];
+
+    const lessons = [
+      {
+        id:"l1", level:"A2", skill:"Grammar",
+        title:"Present Simple vs Present Continuous",
+        theory:"Present Simple odat, fakt va doimiy holatlar uchun ishlatiladi. Present Continuous esa ayni damda davom etayotgan yoki vaqtincha ish-harakat uchun ishlatiladi.",
+        example:"I study English every day. / I am studying English now.",
+        use:"Har kunlik odat, schedule, ayni paytdagi harakat, vaqtincha reja.",
+        avoid:"Stative verbs bilan ko‘p hollarda Continuous ishlatilmaydi: know, like, understand, believe.",
+        video:"https://www.youtube.com/results?search_query=present+simple+vs+present+continuous",
+        quiz:{
+          q:"She ___ TV now.",
+          options:["watch","watches","is watching","watched"],
+          answer:2,
+          why:"'Now' borligi uchun ayni paytdagi harakat ko‘rsatilgan, shuning uchun Present Continuous."
+        }
+      },
+      {
+        id:"l2", level:"B1", skill:"Vocabulary",
+        title:"Education Vocabulary for IELTS",
+        theory:"IELTS’da oddiy so‘zlar o‘rniga mos academic synonym ishlatish lexical resource’ni oshiradi.",
+        example:"important → significant, problem → challenge, help → support",
+        use:"Writing Task 2, Speaking Part 3, summary writing.",
+        avoid:"Bitta matnda bir xil so‘zni juda ko‘p takrorlash.",
+        video:"https://www.youtube.com/results?search_query=ielts+education+vocabulary",
+        quiz:{
+          q:"Best synonym for 'important'?",
+          options:["funny","small","significant","soft"],
+          answer:2,
+          why:"'Significant' academic uslubga mos va kuchli variant."
+        }
+      },
+      {
+        id:"l3", level:"B1", skill:"Reading",
+        title:"Skimming and Scanning",
+        theory:"Skimming umumiy mazmunni tez tushunish uchun, scanning esa kerakli fakt yoki raqamni topish uchun ishlatiladi.",
+        example:"Avval sarlavha va birinchi gaplarni ko‘rib chiqish — skimming. Sana yoki ism qidirish — scanning.",
+        use:"Reading passage vaqtini tejashda juda foydali.",
+        avoid:"Har bir gapni boshidan oxirigacha tarjima qilib o‘qish.",
+        video:"https://www.youtube.com/results?search_query=ielts+skimming+scanning",
+        quiz:{
+          q:"Scanning nima uchun ishlatiladi?",
+          options:["Asosiy g‘oya topish","Qiziqarli joyni belgilash","Aniq ma’lumot topish","Faqat lug‘at yodlash"],
+          answer:2,
+          why:"Scanning aniq detail topish texnikasi."
+        }
+      },
+      {
+        id:"l4", level:"B2", skill:"Writing",
+        title:"Opinion Essay Structure",
+        theory:"Task 2 uchun eng xavfsiz struktura: introduction, body 1, body 2, conclusion.",
+        example:"Intro: paraphrase + thesis. Body: reason + explanation + example. Conclusion: clear final position.",
+        use:"Agree/disagree, discuss both views, advantages/disadvantages.",
+        avoid:"Juda uzun introduction yoki mavzudan chiqib ketgan misollar.",
+        video:"https://www.youtube.com/results?search_query=ielts+opinion+essay+structure",
+        quiz:{
+          q:"Essay conclusion nima qilishi kerak?",
+          options:["Yangi argument berishi","Savolni nusxa qilishi","Positionni aniq yakunlashi","Ko‘proq statistik ma’lumot kiritishi"],
+          answer:2,
+          why:"Conclusion yangi idea emas, fikrni yakunlaydi."
+        }
+      },
+      {
+        id:"l5", level:"B2", skill:"Speaking",
+        title:"Speaking Part 2 Framework",
+        theory:"Past-Now-Feeling-Result framework yordamida uzun va tartibli javob berish osonlashadi.",
+        example:"What happened? When? Why important? How did you feel? What was the result?",
+        use:"Cue card savollarida 1-2 daqiqalik coherent answer berishda.",
+        avoid:"Faqat 2-3 jumla aytib to‘xtab qolish.",
+        video:"https://www.youtube.com/results?search_query=ielts+speaking+part+2+framework",
+        quiz:{
+          q:"Part 2 javobni uzaytirishning eng yaxshi usuli?",
+          options:["Savolni takrorlash","Strukturadan foydalanish va detail berish","Jim turish","Faqat bir gap aytish"],
+          answer:1,
+          why:"Struktura va detail coherence beradi."
+        }
+      },
+      {
+        id:"l6", level:"C1", skill:"Listening",
+        title:"Distractor Recognition",
+        theory:"Listening’da ko‘pincha birinchi aytilgan variant noto‘g‘ri bo‘ladi, keyin speaker fikrini to‘g‘rilaydi. Shu chalg‘ituvchi joylar distractor deyiladi.",
+        example:"The meeting is on Tuesday... sorry, I mean Thursday.",
+        use:"Section 2 va Section 4’da ayniqsa ehtiyot bo‘lish kerak.",
+        avoid:"Birinchi eshitilgan so‘zni darhol belgilab qo‘yish.",
+        video:"https://www.youtube.com/results?search_query=ielts+listening+distractors",
+        quiz:{
+          q:"Distractor nima?",
+          options:["To‘g‘ri javob","Chalg‘ituvchi signal","Faqat grammar qoida","Sinonimlar ro‘yxati"],
+          answer:1,
+          why:"Distractor test topshiruvchini chalg‘itish uchun ishlatiladi."
+        }
+      }
+    ];
+
+    const mockBank = [{
+      id:"mock1",
+      title:"Starter IELTS Mock 1",
+      level:"B1-B2",
+      readingPassage:"Many students now use digital tools to study English. Apps, online videos, and AI tutors give flexible practice opportunities. However, some learners still prefer books and face-to-face classes because they provide structure and reduce distraction.",
+      readingQuestions:[
+        { id:"r1", q:"What is the main topic of the passage?", options:["How to travel abroad","Different ways students study English","Why books are useless","How schools make money"], a:1, why:"Passage English o‘rganish usullari haqida." },
+        { id:"r2", q:"One advantage of digital tools is...", options:["they are always free","they remove all mistakes","they allow flexible practice","they replace teachers completely"], a:2, why:"Matnda flexible practice opportunities deb aytilgan." },
+        { id:"r3", q:"Some learners prefer books because...", options:["they are more distracting","they provide structure","they use AI","they are faster than apps"], a:1, why:"Books and face-to-face classes structure beradi." },
+        { id:"r4", q:"The word 'however' introduces...", options:["a similarity","a contrast","a result","a definition"], a:1, why:"However contrast ko‘rsatadi." },
+        { id:"r5", q:"Which statement is true?", options:["All students hate face-to-face classes.","Digital tools and traditional methods can both be useful.","Only AI tutors help students.","Books are never used today."], a:1, why:"Passage ikkala yo‘lning ham foydasini ko‘rsatadi." }
+      ],
+      listeningText:"Welcome to the language center. This week, students should complete one reading task, one listening task, and one speaking reflection before Friday. The writing workshop will be held on Thursday evening in Room 4.",
+      listeningQuestions:[
+        { id:"l1", q:"How many tasks should students complete before Friday?", options:["1","2","3","4"], a:2, why:"Reading + listening + speaking reflection = 3." },
+        { id:"l2", q:"When is the writing workshop?", options:["Wednesday morning","Thursday evening","Friday evening","Thursday morning"], a:1, why:"Transcript Thursday evening deydi." },
+        { id:"l3", q:"Where will the writing workshop be held?", options:["Room 2","Hall 1","Room 4","Online"], a:2, why:"Room 4 deb aytilgan." },
+        { id:"l4", q:"Which task is NOT mentioned?", options:["Reading","Listening","Speaking reflection","Grammar translation"], a:3, why:"Grammar translation umuman aytilmagan." },
+        { id:"l5", q:"The speaker is probably...", options:["a taxi driver","a language center staff member","a doctor","a tourist"], a:1, why:"Bu language center announcementiga o‘xshaydi." }
+      ],
+      writingTask1:"You should spend about 20 minutes on this task. Summarize a graph showing students’ weekly study hours in 2010 and 2025.",
+      writingTask2:"Some people think students should study only in classrooms, while others believe online learning is better. Discuss both views and give your own opinion.",
+      speaking:{
+        part1:["Do you enjoy learning English?","How often do you use English outside class?"],
+        part2:"Describe a teacher who helped you improve a skill. You should say who the person was, what they taught you, how they helped you, and explain why you remember them.",
+        part3:["What qualities make someone a good teacher?","How has technology changed education?"]
+      }
+    }];
+
+    function esc(str=""){
+      return String(str)
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("'","&#39;");
+    }
+    function roundHalf(n){ return Math.round(n*2)/2; }
+    function clamp(n,min,max){ return Math.max(min,Math.min(max,n)); }
+    function localDate(d){
+      const x = new Date(d);
+      const y = x.getFullYear();
+      const m = String(x.getMonth()+1).padStart(2,"0");
+      const day = String(x.getDate()).padStart(2,"0");
+      return `${y}-${m}-${day}`;
+    }
+    function niceDate(s){
+      if(!s) return "—";
+      const d = new Date(s+"T00:00:00");
+      return d.toLocaleDateString("uz-UZ",{year:"numeric",month:"short",day:"numeric"});
+    }
+    function wordCount(text=""){ return text.trim() ? text.trim().split(/\s+/).length : 0; }
+    function diffDays(start,end){
+      const a = new Date(start+"T00:00:00");
+      const b = new Date(end+"T00:00:00");
+      return Math.ceil((b-a)/86400000);
+    }
+    function estimateObjBand(raw,total){
+      return roundHalf(clamp(3 + (raw/Math.max(1,total))*6, 0, 9));
+    }
+    function avgBand(a,b,c,d){ return roundHalf((a+b+c+d)/4); }
+
+    function loadUsers(){
+      try { return JSON.parse(localStorage.getItem(LS_USERS) || "[]"); }
+      catch { return []; }
+    }
+    function saveUsers(users){
+      localStorage.setItem(LS_USERS, JSON.stringify(users));
+    }
+    function currentEmail(){
+      return localStorage.getItem(LS_CURRENT);
+    }
+    function setCurrentEmail(email){
+      localStorage.setItem(LS_CURRENT, email);
+    }
+    function clearCurrentEmail(){
+      localStorage.removeItem(LS_CURRENT);
+    }
+    function getCurrentUser(){
+      const email = currentEmail();
+      if(!email) return null;
+      return loadUsers().find(u => u.email === email) || null;
+    }
+    function saveCurrentUser(user){
+      const users = loadUsers();
+      const i = users.findIndex(u => u.email === user.email);
+      if(i >= 0) users[i] = user;
+      else users.push(user);
+      saveUsers(users);
+    }
+    function newUser(fullName, phone, email, password){
+      return {
+        id: "u_" + Date.now(),
+        fullName,
+        phone,
+        email,
+        password,
+        createdAt: new Date().toISOString(),
+        profile: {
+          currentLevel: "A2",
+          currentBand: 3,
+          targetBand: 6,
+          examDate: "",
+          dailyMinutes: 90
+        },
+        placementHistory: [],
+        tasks: [],
+        mockHistory: [],
+        certificates: [],
+        chat: [
+          { role:"assistant", content:"Salom. Men sizning IELTS coach yordamchingizman. Reading, Listening, Writing, Speaking yoki reja haqida savol bering." }
+        ]
+      };
+    }
+    function flash(text,type="info"){
+      ui.notice = { text, type };
+      render();
+    }
+
+    function calculateStreak(tasks=[]){
+      if(!tasks.length) return 0;
+      const days = new Set(tasks.filter(t => t.completed).map(t => t.date));
+      let streak = 0;
+      const today = new Date();
+      for(let i=0;i<365;i++){
+        const d = new Date(today);
+        d.setDate(today.getDate()-i);
+        const key = localDate(d);
+        if(days.has(key)) streak++;
+        else break;
+      }
+      return streak;
+    }
+
+    function evaluatePlacement(answers){
+      let score = 0;
+      placementQuestions.forEach(q => {
+        if(Number(answers[q.id]) === q.a) score++;
+      });
+      let level = "A1", band = 2;
+      if(score >= 3){ level = "A2"; band = 3; }
+      if(score >= 5){ level = "B1"; band = 4.5; }
+      if(score >= 7){ level = "B2"; band = 5.5; }
+      if(score >= 9){ level = "C1"; band = 7; }
+      return { score, total: placementQuestions.length, level, band };
+    }
+
+    function generatePlan(profile){
+      const today = localDate(new Date());
+      if(!profile.examDate) return [];
+      const totalDays = Math.max(7, diffDays(today, profile.examDate));
+      const tasks = [];
+      const grammarTopics = [
+        "Present Simple / Continuous",
+        "Past Simple / Present Perfect",
+        "Articles and Determiners",
+        "Conditionals",
+        "Passive Voice",
+        "Relative Clauses",
+        "Complex Sentences"
+      ];
+      const vocabThemes = [
+        "Education","Technology","Environment","Health",
+        "Work and Career","Travel","Culture"
+      ];
+      const skills = ["Reading","Listening","Writing","Speaking"];
+
+      for(let i=0;i<totalDays;i++){
+        const d = new Date();
+        d.setDate(d.getDate()+i);
+        const date = localDate(d);
+        const daily = Number(profile.dailyMinutes || 90);
+        const gMin = Math.max(15, Math.round(daily * 0.2));
+        const vMin = Math.max(15, Math.round(daily * 0.2));
+        const sMin = Math.max(20, daily - gMin - vMin);
+        const est = roundHalf(profile.currentBand + ((profile.targetBand - profile.currentBand) * (i+1) / totalDays));
+
+        tasks.push({
+          id: "t_" + date + "_g",
+          date,
+          title: "Grammar: " + grammarTopics[i % grammarTopics.length],
+          skill: "Grammar",
+          type: "theory",
+          duration: gMin,
+          estimatedBand: est,
+          completed: false,
+          description: "Nazariya, misol, ishlatilishi, ishlatilmasligi va 10 ta mini mashq."
+        });
+        tasks.push({
+          id: "t_" + date + "_v",
+          date,
+          title: "Vocabulary: " + vocabThemes[i % vocabThemes.length],
+          skill: "Vocabulary",
+          type: "practice",
+          duration: vMin,
+          estimatedBand: est,
+          completed: false,
+          description: "20 ta yangi so‘z, collocation va 5 ta gap tuzish."
+        });
+        tasks.push({
+          id: "t_" + date + "_s",
+          date,
+          title: skills[i % skills.length] + " Drill",
+          skill: skills[i % skills.length],
+          type: "skill",
+          duration: sMin,
+          estimatedBand: est,
+          completed: false,
+          description: "Skill bo‘yicha levelga mos vazifa, test va tahlil."
+        });
+
+        if((i+1) % 7 === 0){
+          tasks.push({
+            id: "t_" + date + "_m",
+            date,
+            title: "Weekly IELTS Mock",
+            skill: "Mock",
+            type: "assessment",
+            duration: Math.max(60, daily),
+            estimatedBand: est,
+            completed: false,
+            description: "Haftalik mini mock: 4 ta skill bo‘yicha progress tekshirish."
+          });
+        }
+      }
+      return tasks;
+    }
+
+    function estimateWriting(text1, text2){
+      const totalWords = wordCount(text1) + wordCount(text2);
+      const t2Words = wordCount(text2);
+      const connectors = (text1 + " " + text2).match(/\b(however|therefore|moreover|firstly|secondly|finally|in conclusion|on the other hand|for example|as a result)\b/gi) || [];
+      const paragraphs = ((text1.match(/\n/g)||[]).length + (text2.match(/\n/g)||[]).length) + 2;
+      let band = 4;
+      if(totalWords >= 180) band += 0.5;
+      if(totalWords >= 260) band += 0.5;
+      if(t2Words >= 220) band += 0.5;
+      if(t2Words >= 250) band += 0.5;
+      if(connectors.length >= 3) band += 0.5;
+      if(paragraphs >= 4) band += 0.5;
+      band = roundHalf(clamp(band, 3, 8));
+
+      const feedback = [];
+      if(totalWords < 180) feedback.push("Yozuv qisqa. Ko‘proq fikr va izoh qo‘shing.");
+      if(t2Words < 250) feedback.push("Task 2 odatda kamida 250 so‘z bo‘lishi kerak.");
+      if(connectors.length < 3) feedback.push("Linker va cohesive devices ko‘proq ishlating: however, moreover, therefore...");
+      if(paragraphs < 4) feedback.push("Introduction, body, body, conclusion formatini saqlash foydali.");
+      if(feedback.length === 0) feedback.push("Yaxshi. Endi grammar variety va examples bilan yanada kuchaytirish mumkin.");
+
+      return { band, feedback };
+    }
+
+    function estimateSpeaking(text){
+      const wc = wordCount(text);
+      const connectors = text.match(/\b(because|however|for example|also|in my opinion|actually|so|therefore)\b/gi) || [];
+      let band = 4;
+      if(wc >= 80) band += 0.5;
+      if(wc >= 130) band += 0.5;
+      if(wc >= 180) band += 0.5;
+      if(connectors.length >= 3) band += 0.5;
+      if(/[.!?]/.test(text) && wc >= 100) band += 0.5;
+      band = roundHalf(clamp(band, 3, 8));
+
+      const feedback = [];
+      if(wc < 80) feedback.push("Speaking javobi juda qisqa. Har savolga sabab, misol va detail qo‘shing.");
+      if(connectors.length < 3) feedback.push("Fikrlarni bog‘lash uchun because, however, for example kabi bog‘lovchilar ishlating.");
+      if(wc >= 120) feedback.push("Length yaxshi. Endi pronunciation va natural fluency ustida ishlash kerak.");
+      if(feedback.length === 0) feedback.push("Speaking javobingiz barqaror. Lexical variety va natural expression qo‘shsangiz yanada oshadi.");
+
+      return { band, feedback };
+    }
+
+    function coachReply(msg,user){
+      const m = (msg || "").toLowerCase().trim();
+      const p = user.profile || {};
+      if(!m) return "Savolingizni yozing, men yordam beraman.";
+
+      if(m.includes("reading")){
+        return "Reading uchun 3 qadam: 1) avval savollarni ko‘rib chiqing, 2) passage’da key words toping, 3) skimming va scanningni aralashtirib ishlating. Har kuni kamida 20-30 daqiqa passage ishlang.";
+      }
+      if(m.includes("listening")){
+        return "Listening uchun: 1) audio boshlanishidan oldin savollarni taxmin qiling, 2) distractorlarni kuting, 3) spellingga juda ehtiyot bo‘ling. Har kuni 1 section + transcript analysis qiling.";
+      }
+      if(m.includes("writing")){
+        return "Writing’da band oshirish uchun: 1) aniq strukturaga amal qiling, 2) har body paragraph’da 1 main idea + explanation + example bering, 3) linking words’ni me’yorda ishlating, 4) Task 2 uchun 250+ words yozing.";
+      }
+      if(m.includes("speaking")){
+        return "Speaking’da uzunroq va ravon gapirish uchun javobni 4 qismga bo‘ling: direct answer, reason, example, result. Cue card uchun Past-Now-Feeling-Result framework juda foydali.";
+      }
+      if(m.includes("reja") || m.includes("plan")){
+        return `Sizning hozirgi profilingiz bo‘yicha: level ${p.currentLevel || "noma'lum"}, current band ${p.currentBand || "-"}, target ${p.targetBand || "-"}, daily ${p.dailyMinutes || "-"} min. Tavsiya: grammar 20%, vocab 20%, asosiy skill 60%. Har 7 kunda mini mock qiling.`;
+      }
+      if(m.includes("7") || m.includes("band")){
+        return "Band oshirish uchun faqat test ishlash yetmaydi. Sizga 3 narsa kerak: 1) weak skillni topish, 2) tahlilli practice qilish, 3) haftalik mock orqali progressni o‘lchash.";
+      }
+      if(m.includes("salom")){
+        return "Salom. Qaysi skill bo‘yicha yordam kerak: Reading, Listening, Writing yoki Speaking?";
+      }
+      return "Men tavsiya qilaman: har kuni grammar + vocabulary + bitta asosiy skill ishlang. Agar xohlasangiz, 'writing', 'speaking', 'reading', 'listening' yoki 'reja' deb yozing.";
+    }
+
+    function certificateHTML(user, attempt){
+      return `
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <title>Mock IELTS Certificate</title>
+  <style>
+    body{font-family:Arial,sans-serif;background:#0f172a;color:#fff;padding:40px}
+    .wrap{max-width:900px;margin:0 auto;border:3px solid #22d3ee;border-radius:24px;padding:40px;background:linear-gradient(135deg,#0f172a,#111827)}
+    h1{text-align:center;color:#22d3ee;font-size:42px;margin:0 0 18px}
+    .sub{text-align:center;color:#cbd5e1}
+    .name{text-align:center;font-size:34px;margin:26px 0;font-weight:700}
+    .score{text-align:center;font-size:28px;color:#fde68a;margin:18px 0}
+    .info{margin-top:22px;line-height:1.8;font-size:18px}
+    .footer{text-align:center;color:#cbd5e1;margin-top:32px}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Mock IELTS Certificate</h1>
+    <div class="sub">This certificate confirms completion of an internal IELTS-style mock assessment.</div>
+    <div class="name">${esc(user.fullName)}</div>
+    <div class="score">Estimated Overall Band: ${attempt.overallBand}</div>
+    <div class="info">
+      <div><strong>Mock Title:</strong> ${esc(attempt.title)}</div>
+      <div><strong>Date:</strong> ${new Date(attempt.createdAt).toLocaleString()}</div>
+      <div><strong>Reading:</strong> ${attempt.readingBand}</div>
+      <div><strong>Listening:</strong> ${attempt.listeningBand}</div>
+      <div><strong>Writing:</strong> ${attempt.writingBand}</div>
+      <div><strong>Speaking:</strong> ${attempt.speakingBand}</div>
+    </div>
+    <div class="footer">
+      <p>Issued by: ${esc(OWNER_NAME)}</p>
+      <p>Practice certificate only — not an official IELTS certificate.</p>
+    </div>
+  </div>
+</body>
+</html>`;
+    }
+
+    function ensureCertificateRecord(user, attemptId, mode){
+      user.certificates = user.certificates || [];
+      const exists = user.certificates.find(c => c.attemptId === attemptId && c.mode === mode);
+      if(!exists){
+        user.certificates.unshift({
+          id: "c_" + Date.now(),
+          attemptId,
+          mode,
+          createdAt: new Date().toISOString()
+        });
+        saveCurrentUser(user);
+      }
+    }
+
+    function render(){
+      const app = document.getElementById("app");
+      const user = getCurrentUser();
+
+      if(!user){
+        app.innerHTML = renderAuth();
+      } else {
+        app.innerHTML = renderMain(user);
+      }
+
+      app.onclick = handleClick;
+      app.onchange = handleChange;
+    }
+
+    function renderNotice(){
+      if(!ui.notice) return "";
+      return `<div class="notice ${ui.notice.type}">${esc(ui.notice.text)}</div>`;
+    }
+
+    function renderAuth(){
+      return `
+      <div class="container hero">
+        <div class="card">
+          <span class="pill">IELTS Learning Platform</span>
+          <h1 class="title">Lochinbek IELTS Coach</h1>
+          <p class="subtitle">
+            IELTS o‘rganish, darajani aniqlash, personal reja tuzish, kunlik kalendar,
+            grammar, vocabulary, 4 ta skill, mock test, AI coach va certificate tizimi.
+          </p>
+
+          <div class="divider"></div>
+
+          <div class="grid-2">
+            <div class="card" style="padding:16px">
+              <h3 style="margin-top:0">Nimalar bor?</h3>
+              <ul class="list">
+                <li>Telefon va email bilan profil yaratish</li>
+                <li>Placement test orqali level aniqlash</li>
+                <li>Target band va exam date asosida study plan</li>
+                <li>Har kunlik task va kalendar tracking</li>
+                <li>Grammar, vocabulary va 4 ta skill darslari</li>
+                <li>IELTS-style mock test va band estimate</li>
+                <li>AI coach va certificate</li>
+              </ul>
+            </div>
+            <div class="card" style="padding:16px">
+              <h3 style="margin-top:0">Owner</h3>
+              <p class="subtitle" style="margin:0">
+                Ushbu ilova va certificate ichida quyidagi ism ko‘rinadi:
+              </p>
+              <h2 style="margin:12px 0 0;color:var(--primary)">${esc(OWNER_NAME)}</h2>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid">
+          ${renderNotice()}
+          <div class="card">
+            <h2 class="section-title">Ro‘yxatdan o‘tish</h2>
+            <div class="grid">
+              <input id="su_name" class="input" placeholder="To‘liq ism" />
+              <input id="su_phone" class="input" placeholder="Telefon raqam" />
+              <input id="su_email" class="input" type="email" placeholder="Elektron pochta" />
+              <input id="su_password" class="input" type="password" placeholder="Parol" />
+              <button class="btn btn-primary" data-action="signup">Account yaratish</button>
+            </div>
+          </div>
+
+          <div class="card">
+            <h2 class="section-title">Kirish</h2>
+            <div class="grid">
+              <input id="li_email" class="input" type="email" placeholder="Elektron pochta" />
+              <input id="li_password" class="input" type="password" placeholder="Parol" />
+              <button class="btn btn-secondary" data-action="login">Kirish</button>
+            </div>
+            <p class="small" style="margin-top:12px">
+              Eslatma: bu hozircha static demo. Ma’lumotlar brauzer localStorage’da saqlanadi.
+            </p>
+          </div>
+        </div>
+      </div>`;
+    }
+
+    function renderMain(user){
+      const totalTasks = user.tasks.length;
+      const doneTasks = user.tasks.filter(t => t.completed).length;
+      const progress = totalTasks ? Math.round(doneTasks * 100 / totalTasks) : 0;
+      const streak = calculateStreak(user.tasks);
+      const latestMock = user.mockHistory[0];
+
+      return `
+      <div class="container">
+        <div class="card topbar">
+          <div>
+            <div class="brand">Lochinbek IELTS Coach</div>
+            <div class="muted">${esc(user.fullName)} • ${esc(user.email)} • Target band: ${user.profile.targetBand}</div>
+          </div>
+          <div class="row">
+            <span class="pill">Owner: ${esc(OWNER_NAME)}</span>
+            <button class="btn btn-danger" data-action="logout">Chiqish</button>
+          </div>
+        </div>
+
+        ${renderNotice()}
+
+        <div class="nav">
+          ${navBtn("dashboard","Dashboard")}
+          ${navBtn("placement","Placement")}
+          ${navBtn("plan","Study Plan")}
+          ${navBtn("calendar","Calendar")}
+          ${navBtn("lessons","Lessons")}
+          ${navBtn("mock","Mock")}
+          ${navBtn("ai","AI Coach")}
+          ${navBtn("certificate","Certificates")}
+        </div>
+
+        ${ui.tab === "dashboard" ? renderDashboard(user, progress, streak, latestMock) : ""}
+        ${ui.tab === "placement" ? renderPlacement(user) : ""}
+        ${ui.tab === "plan" ? renderPlan(user) : ""}
+        ${ui.tab === "calendar" ? renderCalendar(user) : ""}
+        ${ui.tab === "lessons" ? renderLessons(user) : ""}
+        ${ui.tab === "mock" ? renderMock(user) : ""}
+        ${ui.tab === "ai" ? renderAI(user) : ""}
+        ${ui.tab === "certificate" ? renderCertificates(user) : ""}
+
+        <div class="footer">
+          Built for IELTS learners • Owner: ${esc(OWNER_NAME)} • Static MVP version
+        </div>
+      </div>`;
+    }
+
+    function navBtn(key,label){
+      return `<button class="btn btn-secondary ${ui.tab===key?"active":""}" data-action="tab" data-tab="${key}">${label}</button>`;
+    }
+
+    function renderDashboard(user, progress, streak, latestMock){
+      const upcoming = user.tasks.filter(t => !t.completed).slice(0,6);
+      return `
+      <div class="grid">
+        <div class="stats">
+          <div class="stat"><div class="k">Current level</div><div class="v">${esc(user.profile.currentLevel)}</div></div>
+          <div class="stat"><div class="k">Current band</div><div class="v">${user.profile.currentBand}</div></div>
+          <div class="stat"><div class="k">Target band</div><div class="v">${user.profile.targetBand}</div></div>
+          <div class="stat"><div class="k">Progress</div><div class="v">${progress}%</div></div>
+          <div class="stat"><div class="k">Streak</div><div class="v">${streak} kun</div></div>
+        </div>
+
+        <div class="grid-2">
+          <div class="card">
+            <h2 class="section-title">Profil</h2>
+            <div class="grid">
+              <input id="profile_name" class="input" value="${esc(user.fullName)}" placeholder="To‘liq ism" />
+              <input id="profile_phone" class="input" value="${esc(user.phone)}" placeholder="Telefon raqam" />
+              <div class="grid-2">
+                <input id="profile_level" class="input" value="${esc(user.profile.currentLevel)}" placeholder="Current level" />
+                <input id="profile_band" class="input" type="number" step="0.5" value="${user.profile.currentBand}" placeholder="Current band" />
+              </div>
+              <div class="grid-2">
+                <input id="profile_target" class="input" type="number" step="0.5" value="${user.profile.targetBand}" placeholder="Target band" />
+                <input id="profile_minutes" class="input" type="number" value="${user.profile.dailyMinutes}" placeholder="Daily minutes" />
+              </div>
+              <input id="profile_exam" class="input" type="date" value="${user.profile.examDate || ""}" />
+              <button class="btn btn-primary" data-action="save-profile">Profilni saqlash</button>
+            </div>
+          </div>
+
+          <div class="card">
+            <h2 class="section-title">Oxirgi mock natija</h2>
+            ${latestMock ? `
+              <div class="grid-2">
+                <div class="stat"><div class="k">Overall</div><div class="v">${latestMock.overallBand}</div></div>
+                <div class="stat"><div class="k">Reading</div><div class="v">${latestMock.readingBand}</div></div>
+                <div class="stat"><div class="k">Listening</div><div class="v">${latestMock.listeningBand}</div></div>
+                <div class="stat"><div class="k">Writing</div><div class="v">${latestMock.writingBand}</div></div>
+                <div class="stat"><div class="k">Speaking</div><div class="v">${latestMock.speakingBand}</div></div>
+              </div>
+              <div class="row" style="margin-top:14px">
+                <button class="btn btn-success" data-action="download-cert" data-id="${latestMock.id}">Certificate yuklab olish</button>
+                <button class="btn btn-warning" data-action="email-cert" data-id="${latestMock.id}">Email draft ochish</button>
+              </div>
+            ` : `<p class="muted">Hali mock ishlanmagan.</p>`}
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div class="card">
+            <h2 class="section-title">Yaqin tasklar</h2>
+            ${upcoming.length ? upcoming.map(t => `
+              <div class="task ${t.completed ? "done" : ""}" style="margin-bottom:10px">
+                <div>
+                  <div><strong>${esc(t.title)}</strong></div>
+                  <div class="small">${niceDate(t.date)} • ${esc(t.skill)} • ${t.duration} min • approx band ${t.estimatedBand}</div>
+                  <div class="small">${esc(t.description)}</div>
+                </div>
+              </div>
+            `).join("") : `<p class="muted">Hali study plan yaratilmagan.</p>`}
+          </div>
+
+          <div class="card">
+            <h2 class="section-title">Qo‘shimcha mukammal funksiyalar</h2>
+            <ul class="list">
+              <li>Streak tracking</li>
+              <li>Haftalik mock reminder</li>
+              <li>Task completion progress</li>
+              <li>Grammar + vocabulary + 4 skill rotation</li>
+              <li>Certificate history</li>
+              <li>AI coach</li>
+              <li>GitHub Pages uchun tayyor static MVP</li>
+            </ul>
+          </div>
+        </div>
+      </div>`;
+    }
+
+    function renderPlacement(user){
+      const last = user.placementHistory[0];
+      return `
+      <div class="card">
+        <h2 class="section-title">Placement test</h2>
+        <p class="muted">Agar o‘quvchi o‘z darajasini bilmasa, shu bo‘lim orqali approximate level va band aniqlanadi.</p>
+        ${last ? `<div class="notice success">Oxirgi natija: ${last.level} • approx band ${last.band} • score ${last.score}/${last.total}</div>` : ""}
+
+        <div class="grid">
+          ${placementQuestions.map((q,i) => `
+            <div class="question">
+              <strong>${i+1}. ${esc(q.q)}</strong>
+              ${q.options.map((op,idx) => `
+                <label class="option">
+                  <input type="radio" name="placement_${q.id}" value="${idx}" ${Number(ui.placementAnswers[q.id])===idx?"checked":""}/>
+                  <span>${esc(op)}</span>
+                </label>
+              `).join("")}
+            </div>
+          `).join("")}
+        </div>
+
+        <div class="row" style="margin-top:16px">
+          <button class="btn btn-primary" data-action="submit-placement">Darajani aniqlash</button>
+          <button class="btn btn-secondary" data-action="tab" data-tab="plan">Keyin reja tuzish</button>
+        </div>
+      </div>`;
+    }
+
+    function renderPlan(user){
+      return `
+      <div class="grid-2">
+        <div class="card">
+          <h2 class="section-title">Study plan generator</h2>
+          <p class="muted">Current level, current band, target band, exam date va daily minutes asosida kunlik reja tuziladi.</p>
+          <div class="grid">
+            <input id="plan_level" class="input" value="${esc(user.profile.currentLevel)}" placeholder="Current level" />
+            <div class="grid-2">
+              <input id="plan_band" class="input" type="number" step="0.5" value="${user.profile.currentBand}" placeholder="Current band" />
+              <input id="plan_target" class="input" type="number" step="0.5" value="${user.profile.targetBand}" placeholder="Target band" />
+            </div>
+            <div class="grid-2">
+              <input id="plan_exam" class="input" type="date" value="${user.profile.examDate || ""}" />
+              <input id="plan_minutes" class="input" type="number" value="${user.profile.dailyMinutes}" placeholder="Daily minutes" />
+            </div>
+            <button class="btn btn-primary" data-action="generate-plan">Reja yaratish</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2 class="section-title">Reja logikasi</h2>
+          <ul class="list">
+            <li>Har kuni grammar vazifa</li>
+            <li>Har kuni vocabulary vazifa</li>
+            <li>Har kuni 4 skill’dan biri bo‘yicha asosiy drill</li>
+            <li>Har 7 kunda weekly mock</li>
+            <li>Har taskda estimated band ko‘rsatiladi</li>
+            <li>Exam date’gacha to‘liq plan chiqadi</li>
+          </ul>
+          <p class="small" style="margin-top:10px">Maslahat: target band realistik bo‘lishi uchun current band va exam date orasidagi vaqtni yaxshi kiriting.</p>
+        </div>
+      </div>`;
+    }
+
+    function renderCalendar(user){
+      const days = [];
+      const start = new Date();
+      for(let i=0;i<28;i++){
+        const d = new Date();
+        d.setDate(start.getDate()+i);
+        days.push(localDate(d));
+      }
+      const tasksByDate = {};
+      user.tasks.forEach(t => {
+        if(!tasksByDate[t.date]) tasksByDate[t.date] = [];
+        tasksByDate[t.date].push(t);
+      });
+
+      return `
+      <div class="grid">
+        <div class="card">
+          <h2 class="section-title">Calendar</h2>
+          <div class="calendar">
+            ${days.map(day => `
+              <div class="day">
+                <h4>${niceDate(day)}</h4>
+                ${(tasksByDate[day] || []).slice(0,4).map(t => `
+                  <div class="mini-task" style="${t.completed ? 'border-color:#166534;background:rgba(20,83,45,.18)' : ''}">
+                    <strong>${esc(t.skill)}</strong><br>${esc(t.title)}
+                  </div>
+                `).join("") || `<div class="small">Task yo‘q</div>`}
+                ${(tasksByDate[day] || []).length > 4 ? `<div class="small">+${tasksByDate[day].length - 4} ta yana</div>` : ""}
+              </div>
+            `).join("")}
+          </div>
+        </div>
+
+        <div class="card">
+          <h2 class="section-title">Barcha tasklar</h2>
+          <div class="grid">
+            ${user.tasks.length ? user.tasks.slice(0,120).map(t => `
+              <div class="task ${t.completed ? "done" : ""}">
+                <div>
+                  <div><strong>${esc(t.title)}</strong></div>
+                  <div class="small">${niceDate(t.date)} • ${esc(t.skill)} • ${t.duration} min • approx band ${t.estimatedBand}</div>
+                  <div class="small">${esc(t.description)}</div>
+                </div>
+                <div class="row">
+                  <span class="badge">${t.type}</span>
+                  <button class="btn ${t.completed ? "btn-success" : "btn-secondary"}" data-action="toggle-task" data-id="${t.id}">
+                    ${t.completed ? "Bajarilgan" : "Bajarildi deb belgilash"}
+                  </button>
+                </div>
+              </div>
+            `).join("") : `<p class="muted">Hali plan yaratilmagan.</p>`}
+          </div>
+        </div>
+      </div>`;
+    }
+
+    function renderLessons(user){
+      const level = user.profile.currentLevel || "";
+      const filtered = lessons.filter(x => !level || x.level.startsWith(level[0]) || x.level === level);
+      const list = filtered.length ? filtered : lessons;
+
+      return `
+      <div class="card">
+        <h2 class="section-title">Darslar</h2>
+        <p class="muted">Har darsda nazariya, misol, ishlatilish, ishlatilmaslik, video dars va test bor.</p>
+        <div class="grid-2">
+          ${list.map(l => `
+            <div class="lesson">
+              <div style="margin-bottom:8px">
+                <span class="tag">${esc(l.level)}</span>
+                <span class="tag">${esc(l.skill)}</span>
+              </div>
+              <h3>${esc(l.title)}</h3>
+              <p><strong>Nazariya:</strong> ${esc(l.theory)}</p>
+              <p><strong>Misol:</strong> ${esc(l.example)}</p>
+              <p><strong>Ishlatilishi:</strong> ${esc(l.use)}</p>
+              <p><strong>Ishlatilmasligi:</strong> ${esc(l.avoid)}</p>
+              <p><strong>Video:</strong> <a href="${l.video}" target="_blank">Ochish</a></p>
+
+              <div class="divider"></div>
+              <p><strong>Mini test:</strong> ${esc(l.quiz.q)}</p>
+              <ul class="list">
+                ${l.quiz.options.map(op => `<li>${esc(op)}</li>`).join("")}
+              </ul>
+              <p class="small"><strong>To‘g‘ri javob:</strong> ${esc(l.quiz.options[l.quiz.answer])}</p>
+              <p class="small"><strong>Nega:</strong> ${esc(l.quiz.why)}</p>
+            </div>
+          `).join("")}
+        </div>
+      </div>`;
+    }
+
+    function renderMock(user){
+      const mock = mockBank[0];
+      const latest = user.mockHistory[0];
+
+      return `
+      <div class="grid">
+        <div class="card">
+          <h2 class="section-title">${esc(mock.title)}</h2>
+          <p class="muted">Bu internal IELTS-style mock. Band approximate hisoblanadi.</p>
+        </div>
+
+        <div class="card">
+          <h2 class="section-title">Reading</h2>
+          <p>${esc(mock.readingPassage)}</p>
+          <div class="grid">
+            ${mock.readingQuestions.map((q,i) => `
+              <div class="question">
+                <strong>${i+1}. ${esc(q.q)}</strong>
+                ${q.options.map((op,idx) => `
+                  <label class="option">
+                    <input type="radio" name="reading_${q.id}" value="${idx}" ${Number(ui.readingAnswers[q.id])===idx?"checked":""}/>
+                    <span>${esc(op)}</span>
+                  </label>
+                `).join("")}
+              </div>
+            `).join("")}
+          </div>
+        </div>
+
+        <div class="card">
+          <h2 class="section-title">Listening</h2>
+          <p>${esc(mock.listeningText)}</p>
+          <div class="grid">
+            ${mock.listeningQuestions.map((q,i) => `
+              <div class="question">
+                <strong>${i+1}. ${esc(q.q)}</strong>
+                ${q.options.map((op,idx) => `
+                  <label class="option">
+                    <input type="radio" name="listening_${q.id}" value="${idx}" ${Number(ui.listeningAnswers[q.id])===idx?"checked":""}/>
+                    <span>${esc(op)}</span>
+                  </label>
+                `).join("")}
+              </div>
+            `).join("")}
+          </div>
+        </div>
+
+        <div class="card">
+          <h2 class="section-title">Writing</h2>
+          <p><strong>Task 1:</strong> ${esc(mock.writingTask1)}</p>
+          <textarea id="writing1" class="textarea" oninput="window.__ui.writing1=this.value">${esc(ui.writing1)}</textarea>
+          <div style="height:12px"></div>
+          <p><strong>Task 2:</strong> ${esc(mock.writingTask2)}</p>
+          <textarea id="writing2" class="textarea" oninput="window.__ui.writing2=this.value">${esc(ui.writing2)}</textarea>
+        </div>
+
+        <div class="card">
+          <h2 class="section-title">Speaking</h2>
+          <p><strong>Part 1:</strong> ${esc(mock.speaking.part1.join(" / "))}</p>
+          <p><strong>Part 2:</strong> ${esc(mock.speaking.part2)}</p>
+          <p><strong>Part 3:</strong> ${esc(mock.speaking.part3.join(" / "))}</p>
+          <textarea id="speaking" class="textarea" oninput="window.__ui.speaking=this.value" placeholder="Speaking javobingizni matn ko‘rinishida yozing">${esc(ui.speaking)}</textarea>
+
+          <div class="row" style="margin-top:14px">
+            <button class="btn btn-primary" data-action="submit-mock">Mock topshirish</button>
+          </div>
+        </div>
+
+        ${latest ? `
+        <div class="card">
+          <h2 class="section-title">Oxirgi natija</h2>
+          <div class="grid-4">
+            <div class="stat"><div class="k">Reading</div><div class="v">${latest.readingBand}</div></div>
+            <div class="stat"><div class="k">Listening</div><div class="v">${latest.listeningBand}</div></div>
+            <div class="stat"><div class="k">Writing</div><div class="v">${latest.writingBand}</div></div>
+            <div class="stat"><div class="k">Speaking</div><div class="v">${latest.speakingBand}</div></div>
+          </div>
+          <div class="stat" style="margin-top:14px">
+            <div class="k">Overall Band</div>
+            <div class="v">${latest.overallBand}</div>
+          </div>
+
+          <div class="divider"></div>
+          <h3>Writing feedback</h3>
+          <ul class="list">${latest.writingFeedback.map(x => `<li>${esc(x)}</li>`).join("")}</ul>
+
+          <h3>Speaking feedback</h3>
+          <ul class="list">${latest.speakingFeedback.map(x => `<li>${esc(x)}</li>`).join("")}</ul>
+
+          <h3>Reading tahlili</h3>
+          <ul class="list">${latest.readingReview.map(x => `<li><strong>${esc(x.question)}</strong> — ${esc(x.explanation)}</li>`).join("")}</ul>
+
+          <h3>Listening tahlili</h3>
+          <ul class="list">${latest.listeningReview.map(x => `<li><strong>${esc(x.question)}</strong> — ${esc(x.explanation)}</li>`).join("")}</ul>
+
+          <div class="row" style="margin-top:14px">
+            <button class="btn btn-success" data-action="download-cert" data-id="${latest.id}">Certificate yuklab olish</button>
+            <button class="btn btn-warning" data-action="email-cert" data-id="${latest.id}">Email draft ochish</button>
+          </div>
+        </div>
+        ` : ""}
+      </div>`;
+    }
+
+    function renderAI(user){
+      return `
+      <div class="grid-2">
+        <div class="card">
+          <h2 class="section-title">AI Coach</h2>
+          <div class="chat">
+            ${user.chat.map(m => `
+              <div class="bubble ${m.role === "user" ? "user" : "bot"}">
+                <strong>${m.role === "user" ? "Siz" : "Coach"}:</strong><br>
+                ${esc(m.content).replace(/\n/g,"<br>")}
+              </div>
+            `).join("")}
+          </div>
+          <div style="height:12px"></div>
+          <textarea id="ai_input" class="textarea" placeholder="Savolingizni yozing...">${esc(ui.aiInput)}</textarea>
+          <div class="row" style="margin-top:12px">
+            <button class="btn btn-primary" data-action="send-ai">Yuborish</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2 class="section-title">AI Coach misol savollar</h2>
+          <ul class="list">
+            <li>Reading bandimni qanday oshirsam bo‘ladi?</li>
+            <li>Writing task 2 uchun struktura ber</li>
+            <li>Speaking uchun javobni qanday uzaytiraman?</li>
+            <li>Menga reja tuzib ber</li>
+            <li>Band 7 olish uchun nima qilishim kerak?</li>
+          </ul>
+        </div>
+      </div>`;
+    }
+
+    function renderCertificates(user){
+      return `
+      <div class="grid-2">
+        <div class="card">
+          <h2 class="section-title">Mock attempts</h2>
+          ${user.mockHistory.length ? user.mockHistory.map(m => `
+            <div class="task" style="margin-bottom:10px">
+              <div>
+                <div><strong>${esc(m.title)}</strong></div>
+                <div class="small">${new Date(m.createdAt).toLocaleString()}</div>
+                <div class="small">Overall ${m.overallBand} • R ${m.readingBand} • L ${m.listeningBand} • W ${m.writingBand} • S ${m.speakingBand}</div>
+              </div>
+              <div class="row">
+                <button class="btn btn-success" data-action="download-cert" data-id="${m.id}">Yuklab olish</button>
+                <button class="btn btn-warning" data-action="email-cert" data-id="${m.id}">Email</button>
+              </div>
+            </div>
+          `).join("") : `<p class="muted">Hali mock history yo‘q.</p>`}
+        </div>
+
+        <div class="card">
+          <h2 class="section-title">Certificate preview</h2>
+          ${user.mockHistory[0] ? `
+            <div class="cert">
+              <h1 style="text-align:center;color:var(--primary);margin-top:0">Mock IELTS Certificate</h1>
+              <p style="text-align:center" class="muted">Internal IELTS-style mock assessment</p>
+              <h2 style="text-align:center;margin:20px 0">${esc(user.fullName)}</h2>
+              <h3 style="text-align:center;color:#fde68a">Estimated Overall Band: ${user.mockHistory[0].overallBand}</h3>
+              <p><strong>Mock:</strong> ${esc(user.mockHistory[0].title)}</p>
+              <p><strong>Date:</strong> ${new Date(user.mockHistory[0].createdAt).toLocaleString()}</p>
+              <p><strong>Issued by:</strong> ${esc(OWNER_NAME)}</p>
+              <p class="small">Practice certificate only — not an official IELTS certificate.</p>
+            </div>
+          ` : `<p class="muted">Preview uchun avval mock ishlang.</p>`}
+
+          <div class="divider"></div>
+
+          <h3>Certificate history</h3>
+          ${user.certificates.length ? `
+            <ul class="list">
+              ${user.certificates.map(c => `
+                <li>${new Date(c.createdAt).toLocaleString()} • ${esc(c.mode)} • ${esc(c.attemptId)}</li>
+              `).join("")}
+            </ul>
+          ` : `<p class="muted">Hali certificate tarixi yo‘q.</p>`}
+
+          <p class="small" style="margin-top:10px">
+            Static versiyada “Email” tugmasi avtomatik yubormaydi, faqat mail client uchun draft ochadi.
+          </p>
+        </div>
+      </div>`;
+    }
+
+    function handleChange(e){
+      const t = e.target;
+      if(!t) return;
+
+      if(t.name && t.name.startsWith("placement_")){
+        const id = t.name.replace("placement_","");
+        ui.placementAnswers[id] = Number(t.value);
+      }
+      if(t.name && t.name.startsWith("reading_")){
+        const id = t.name.replace("reading_","");
+        ui.readingAnswers[id] = Number(t.value);
+      }
+      if(t.name && t.name.startsWith("listening_")){
+        const id = t.name.replace("listening_","");
+        ui.listeningAnswers[id] = Number(t.value);
+      }
+      if(t.id === "ai_input"){
+        ui.aiInput = t.value;
+      }
+    }
+
+    function handleClick(e){
+      const btn = e.target.closest("[data-action]");
+      if(!btn) return;
+      const action = btn.dataset.action;
+      const user = getCurrentUser();
+
+      if(action === "tab"){
+        ui.tab = btn.dataset.tab;
+        ui.notice = null;
+        render();
+        return;
+      }
+
+      if(action === "signup"){
+        const fullName = document.getElementById("su_name").value.trim();
+        const phone = document.getElementById("su_phone").value.trim();
+        const email = document.getElementById("su_email").value.trim().toLowerCase();
+        const password = document.getElementById("su_password").value.trim();
+
+        if(!fullName || !phone || !email || !password){
+          flash("Iltimos, barcha maydonlarni to‘ldiring.","warning");
+          return;
+        }
+        const users = loadUsers();
+        if(users.find(u => u.email === email)){
+          flash("Bu email bilan account mavjud.","danger");
+          return;
+        }
+        const u = newUser(fullName, phone, email, password);
+        users.push(u);
+        saveUsers(users);
+        setCurrentEmail(email);
+        ui.tab = "dashboard";
+        flash("Account muvaffaqiyatli yaratildi.","success");
+        return;
+      }
+
+      if(action === "login"){
+        const email = document.getElementById("li_email").value.trim().toLowerCase();
+        const password = document.getElementById("li_password").value.trim();
+        const u = loadUsers().find(x => x.email === email && x.password === password);
+        if(!u){
+          flash("Email yoki parol noto‘g‘ri.","danger");
+          return;
+        }
+        setCurrentEmail(u.email);
+        ui.tab = "dashboard";
+        flash("Muvaffaqiyatli kirdingiz.","success");
+        return;
+      }
+
+      if(action === "logout"){
+        clearCurrentEmail();
+        ui.tab = "dashboard";
+        ui.notice = { text:"Accountdan chiqdingiz.", type:"info" };
+        render();
+        return;
+      }
+
+      if(!user) return;
+
+      if(action === "save-profile"){
+        const updated = structuredClone(user);
+        updated.fullName = document.getElementById("profile_name").value.trim();
+        updated.phone = document.getElementById("profile_phone").value.trim();
+        updated.profile.currentLevel = document.getElementById("profile_level").value.trim() || "A2";
+        updated.profile.currentBand = Number(document.getElementById("profile_band").value || 3);
+        updated.profile.targetBand = Number(document.getElementById("profile_target").value || 6);
+        updated.profile.dailyMinutes = Number(document.getElementById("profile_minutes").value || 90);
+        updated.profile.examDate = document.getElementById("profile_exam").value || "";
+        saveCurrentUser(updated);
+        flash("Profil saqlandi.","success");
+        return;
+      }
+
+      if(action === "submit-placement"){
+        const res = evaluatePlacement(ui.placementAnswers);
+        const updated = structuredClone(user);
+        updated.profile.currentLevel = res.level;
+        updated.profile.currentBand = res.band;
+        updated.placementHistory.unshift({
+          ...res,
+          createdAt: new Date().toISOString()
+        });
+        saveCurrentUser(updated);
+        flash(`Placement natija: ${res.level} / approx band ${res.band}`,"success");
+        return;
+      }
+
+      if(action === "generate-plan"){
+        const updated = structuredClone(user);
+        updated.profile.currentLevel = document.getElementById("plan_level").value.trim() || updated.profile.currentLevel;
+        updated.profile.currentBand = Number(document.getElementById("plan_band").value || updated.profile.currentBand);
+        updated.profile.targetBand = Number(document.getElementById("plan_target").value || updated.profile.targetBand);
+        updated.profile.examDate = document.getElementById("plan_exam").value || "";
+        updated.profile.dailyMinutes = Number(document.getElementById("plan_minutes").value || updated.profile.dailyMinutes);
+
+        if(!updated.profile.examDate){
+          flash("Exam date kiriting.","warning");
+          return;
+        }
+
+        updated.tasks = generatePlan(updated.profile);
+        saveCurrentUser(updated);
+        ui.tab = "calendar";
+        flash("Study plan yaratildi.","success");
+        return;
+      }
+
+      if(action === "toggle-task"){
+        const id = btn.dataset.id;
+        const updated = structuredClone(user);
+        const task = updated.tasks.find(t => t.id === id);
+        if(task) task.completed = !task.completed;
+        saveCurrentUser(updated);
+        flash(task && task.completed ? "Task bajarildi deb belgilandi." : "Task qayta ochildi.","success");
+        return;
+      }
+
+      if(action === "submit-mock"){
+        const mock = mockBank[0];
+
+        let rRaw = 0;
+        const readingReview = mock.readingQuestions.map(q => {
+          const selected = Number(ui.readingAnswers[q.id]);
+          const correct = selected === q.a;
+          if(correct) rRaw++;
+          return { question:q.q, selected, correct, explanation:q.why };
+        });
+
+        let lRaw = 0;
+        const listeningReview = mock.listeningQuestions.map(q => {
+          const selected = Number(ui.listeningAnswers[q.id]);
+          const correct = selected === q.a;
+          if(correct) lRaw++;
+          return { question:q.q, selected, correct, explanation:q.why };
+        });
+
+        const readingBand = estimateObjBand(rRaw, mock.readingQuestions.length);
+        const listeningBand = estimateObjBand(lRaw, mock.listeningQuestions.length);
+        const writing = estimateWriting(ui.writing1, ui.writing2);
+        const speaking = estimateSpeaking(ui.speaking);
+        const overallBand = avgBand(readingBand, listeningBand, writing.band, speaking.band);
+
+        const updated = structuredClone(user);
+        updated.mockHistory.unshift({
+          id:"m_" + Date.now(),
+          title:mock.title,
+          createdAt:new Date().toISOString(),
+          readingBand,
+          listeningBand,
+          writingBand:writing.band,
+          speakingBand:speaking.band,
+          overallBand,
+          readingReview,
+          listeningReview,
+          writingFeedback:writing.feedback,
+          speakingFeedback:speaking.feedback
+        });
+        saveCurrentUser(updated);
+
+        ui.readingAnswers = {};
+        ui.listeningAnswers = {};
+        ui.writing1 = "";
+        ui.writing2 = "";
+        ui.speaking = "";
+
+        flash(`Mock tekshirildi. Estimated Overall Band: ${overallBand}`,"success");
+        return;
+      }
+
+      if(action === "send-ai"){
+        const msgBox = document.getElementById("ai_input");
+        const text = (msgBox?.value || "").trim();
+        if(!text){
+          flash("Savol yozing.","warning");
+          return;
+        }
+        const updated = structuredClone(user);
+        updated.chat.push({ role:"user", content:text });
+        updated.chat.push({ role:"assistant", content:coachReply(text, updated) });
+        saveCurrentUser(updated);
+        ui.aiInput = "";
+        flash("AI coach javob berdi.","success");
+        return;
+      }
+
+      if(action === "download-cert"){
+        const id = btn.dataset.id;
+        const attempt = user.mockHistory.find(m => m.id === id);
+        if(!attempt){
+          flash("Mock attempt topilmadi.","danger");
+          return;
+        }
+        const html = certificateHTML(user, attempt);
+        const blob = new Blob([html], { type:"text/html" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = `mock-certificate-${attempt.id}.html`;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        URL.revokeObjectURL(url);
+
+        const updated = structuredClone(user);
+        ensureCertificateRecord(updated, attempt.id, "download");
+        saveCurrentUser(updated);
+        flash("Certificate yuklab olindi. Faylni brauzerda ochib print yoki PDF qilishingiz mumkin.","success");
+        return;
+      }
+
+      if(action === "email-cert"){
+        const id = btn.dataset.id;
+        const attempt = user.mockHistory.find(m => m.id === id);
+        if(!attempt){
+          flash("Mock attempt topilmadi.","danger");
+          return;
+        }
+        const updated = structuredClone(user);
+        ensureCertificateRecord(updated, attempt.id, "email-draft");
+        saveCurrentUser(updated);
+
+        const subject = encodeURIComponent(`Mock IELTS Certificate - ${attempt.title}`);
+        const body = encodeURIComponent(
+`Student: ${user.fullName}
+Email: ${user.email}
+Estimated Overall Band: ${attempt.overallBand}
+Reading: ${attempt.readingBand}
+Listening: ${attempt.listeningBand}
+Writing: ${attempt.writingBand}
+Speaking: ${attempt.speakingBand}
+
+Issued by: ${OWNER_NAME}
+
+Note: Practice certificate only — not an official IELTS certificate.`
+        );
+        window.location.href = `mailto:${encodeURIComponent(user.email)}?subject=${subject}&body=${body}`;
+        flash("Email draft ochildi. Avtomatik yuborish uchun keyin backend qo‘shiladi.","info");
+        return;
+      }
+    }
+
+    render();
+  </script>
+</body>
+</html>
